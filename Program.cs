@@ -1,4 +1,5 @@
-﻿using Section12ChessGame.Entities.Board;
+﻿using Section12ChessGame.Entities;
+using Section12ChessGame.Entities.BoardClasses;
 
 namespace Section12ChessGame
 {
@@ -6,9 +7,9 @@ namespace Section12ChessGame
     {
         static void Main(string[] args)
         {
-            Position p = new(3, 4);
+            Board board = new(8, 8);
 
-            Console.WriteLine(p);
+            Screen.PrintBoard(board);
         }
     }
 }

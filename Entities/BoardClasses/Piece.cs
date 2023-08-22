@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Section12ChessGame.Entities.Board
+namespace Section12ChessGame.Entities.BoardClasses
 {
     internal class Piece
     {
