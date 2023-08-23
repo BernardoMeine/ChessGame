@@ -10,18 +10,22 @@ namespace Section12ChessGame
         {
             try
             {
-                Board board = new(8, 8);
+                ChessMatch match = new();
 
+                while (!match.Finished)
+                {
+                    Console.Clear();
+                    Screen.PrintBoard(match.Board);
 
-                board.PlacePiece(new King(Color.White, board), new Position(0, 2));
-                board.PlacePiece(new King(Color.White, board), new Position(0, 4));
-                board.PlacePiece(new King(Color.Blue, board), new Position(3, 6));
-                board.PlacePiece(new Tower(Color.Red, board), new Position(4, 3));
-                board.PlacePiece(new Tower(Color.White, board), new Position(5, 7));
+                    Console.WriteLine();
+                    Console.WriteLine("Digite a posição de origem");
+                    Position origin = Screen.ReadChessPosition().ConvertToPosition();
+                    Console.WriteLine("Digite a posição de destino");
+                    Position destiny = Screen.ReadChessPosition().ConvertToPosition();
 
+                    match.ExecuteMoviment(origin, destiny);
+                }
 
-
-                Screen.PrintBoard(board);
             }
 
             catch (BoardException e) {

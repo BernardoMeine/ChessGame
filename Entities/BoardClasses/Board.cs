@@ -40,6 +40,20 @@ namespace Section12ChessGame.Entities.BoardClasses
             p.Position = pos;
         }
 
+        public Piece RemovePiece(Position pos)
+        {
+            if(Piece(pos)  == null)
+            {
+                return null;
+            }
+
+            Piece aux = Piece(pos);
+            aux.Position = null;
+            Pieces[pos.Row, pos.Column] = null;
+
+            return aux;
+        }
+
         public bool PieceExists (Position pos)
         {
             ValidatePosition(pos);

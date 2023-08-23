@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Section12ChessGame.Entities.BoardClasses;
+using Section12ChessGame.Entities.ChessClasses;
 
 namespace Section12ChessGame.Entities;
 
@@ -33,6 +34,14 @@ internal class Screen
         Console.WriteLine("  a b c d e f g h");
     }
 
+    public static ChessPosition ReadChessPosition()
+    {
+        string s = Console.ReadLine();
+        char column = s[0];
+        int row = int.Parse(s[1] + " ");
+        return new ChessPosition(column, row);
+    }
+
     public static void PrintPiece(Piece piece)
     {
         if(piece.Color == Color.White)
@@ -46,5 +55,4 @@ internal class Screen
             Console.ForegroundColor = aux;
         }
     }
-
 }

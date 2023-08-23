@@ -20,5 +20,10 @@ namespace Section12ChessGame.Entities.BoardClasses
             Board = board;
             AmountOfMoviments = 0;
         }
+
+        public void IncrementAmountOfMoviments()
+        {
+            AmountOfMoviments++;
+        }
     }
 }

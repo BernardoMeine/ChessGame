@@ -1,6 +1,7 @@
 ﻿using Section12ChessGame.Entities.BoardClasses;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,13 +10,14 @@ namespace Section12ChessGame.Entities.ChessClasses
 {
     internal class ChessPosition
     {
-        public char Row { get; set; }
-        public int Column { get; set; }
+        public char Column { get; set; }
+        public int Row { get; set; }
 
-        public ChessPosition(char row, int column)
+        public ChessPosition(char column, int row)
         {
-            Row = row;
             Column = column;
+            Row = row;
+            
         }
 
         public Position ConvertToPosition()
