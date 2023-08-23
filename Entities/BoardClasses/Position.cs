@@ -17,6 +17,12 @@ namespace Section12ChessGame.Entities.BoardClasses
             Column = column;
         }
 
+        public void DefineValues(int row, int column)
+        {
+            Row = row;
+            Column = column;
+        }
+
         public override string ToString()
         {
             return $"{Row}, {Column}";

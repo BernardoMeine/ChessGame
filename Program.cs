@@ -18,9 +18,16 @@ namespace Section12ChessGame
                     Screen.PrintBoard(match.Board);
 
                     Console.WriteLine();
-                    Console.WriteLine("Digite a posição de origem");
+                    Console.Write("Digite a posição de origem: ");
                     Position origin = Screen.ReadChessPosition().ConvertToPosition();
-                    Console.WriteLine("Digite a posição de destino");
+
+                    bool[,] PossiblePositions = match.Board.Piece(origin).PossibleMoviments();
+
+                    Console.Clear();
+                    Screen.PrintBoard(match.Board, PossiblePositions);
+
+                    Console.WriteLine();
+                    Console.Write("Digite a posição de destino: ");
                     Position destiny = Screen.ReadChessPosition().ConvertToPosition();
 
                     match.ExecuteMoviment(origin, destiny);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Section12ChessGame.Entities.BoardClasses
 {
-    internal class Piece
+    abstract class Piece
     {
         public Position Position { get; set; }
         public Color Color { get; protected set; }
@@ -25,5 +25,7 @@ namespace Section12ChessGame.Entities.BoardClasses
         {
             AmountOfMoviments++;
         }
+
+        public abstract bool[,] PossibleMoviments();
     }
 }
