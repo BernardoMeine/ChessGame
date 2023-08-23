@@ -13,9 +13,9 @@ namespace Section12ChessGame.Entities.BoardClasses
         public int AmountOfMoviments { get; protected set; }
         public Board Board { get; protected set; }
 
-        public Piece(Position position, Color color, Board board)
+        public Piece( Color color, Board board)
         {
-            Position = position;
+            Position = null;
             Color = color;
             Board = board;
             AmountOfMoviments = 0;

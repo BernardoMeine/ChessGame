@@ -17,7 +17,7 @@ internal class Screen
             {
                 if (board.Piece(i, j) == null)
                 {
-                    Console.Write("-");
+                    Console.Write("- ");
                 }
                 else
                 {

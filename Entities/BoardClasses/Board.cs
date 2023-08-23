@@ -23,5 +23,12 @@ namespace Section12ChessGame.Entities.BoardClasses
         { 
             return Pieces[row, column];
         }
+
+        public void PlacePiece (Piece p, Position pos)
+        {
+            Pieces[pos.Row, pos.Column] = p;
+
+            p.Position = pos;
+        } 
     }
 }
