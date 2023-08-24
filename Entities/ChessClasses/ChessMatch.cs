@@ -10,8 +10,8 @@ namespace Section12ChessGame.Entities.ChessClasses
     internal class ChessMatch
     {
         public Board Board { get; private set; }
-        private int Turn;
-        private Color CurrentPlayer;
+        public int Turn { get; private set; }
+        public Color CurrentPlayer { get; private set; }
         public bool Finished { get; private set; }
         
 
@@ -31,6 +31,49 @@ namespace Section12ChessGame.Entities.ChessClasses
             Board.PlacePiece(p, destiny);
         }
 
+        public void PerformMove(Position origin, Position destiny)
+        {
+            ExecuteMoviment(origin, destiny);
+            Turn++;
+            ChangePlayer();
+        }
+
+        public void ValidateOriginPosition (Position pos)
+        {
+            if(Board.Piece(pos) == null)
+            {
+                throw new BoardException("Não existe peça na posição de origem escolhida!");
+            }
+
+            if(CurrentPlayer != Board.Piece(pos).Color) 
+            {
+                throw new BoardException("A peça de origem escolhida não é sua!");
+            }
+
+            if (!Board.Piece(pos).ThereArePossibleMoviments())
+            {
+                throw new BoardException("Não há movimentos possíveis para a peça de origem escolhida!");
+            }
+        }
+
+        public void ValidateDestinyPosition (Position origin, Position destiny)
+        {
+            if (!Board.Piece(origin).CanMoveTo(destiny)) {
+                throw new BoardException("Posição de destino inválida!");
+            }
+        }
+
+        public void ChangePlayer()
+        {
+            if(CurrentPlayer == Color.White)
+            {
+                CurrentPlayer = Color.Black;
+            } else
+            {
+                CurrentPlayer = Color.White;
+            }
+        }
+
         private void PlacePieces()
         {
             Board.PlacePiece(new Tower(Color.White, Board), new ChessPosition('c', 1).ConvertToPosition());
@@ -47,5 +90,7 @@ namespace Section12ChessGame.Entities.ChessClasses
             Board.PlacePiece(new Tower(Color.Black, Board), new ChessPosition('d', 7).ConvertToPosition());
             Board.PlacePiece(new Tower(Color.Black, Board), new ChessPosition('e', 7).ConvertToPosition());
         }
+
+        
     }
 }

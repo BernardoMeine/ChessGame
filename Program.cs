@@ -14,29 +14,41 @@ namespace Section12ChessGame
 
                 while (!match.Finished)
                 {
-                    Console.Clear();
-                    Screen.PrintBoard(match.Board);
+                    try
+                    {
+                        Console.Clear();
+                        Screen.PrintBoard(match.Board);
+                        Console.WriteLine();
+                        Console.WriteLine($"Turno: {match.Turn}");
+                        Console.WriteLine($"Aguardando jogada: {match.CurrentPlayer}");
 
-                    Console.WriteLine();
-                    Console.Write("Digite a posição de origem: ");
-                    Position origin = Screen.ReadChessPosition().ConvertToPosition();
+                        Console.WriteLine();
+                        Console.Write("Digite a posição de origem: ");
+                        Position origin = Screen.ReadChessPosition().ConvertToPosition();
+                        match.ValidateOriginPosition(origin);
 
-                    bool[,] PossiblePositions = match.Board.Piece(origin).PossibleMoviments();
+                        bool[,] PossiblePositions = match.Board.Piece(origin).PossibleMoviments();
 
-                    Console.Clear();
-                    Screen.PrintBoard(match.Board, PossiblePositions);
+                        Console.Clear();
+                        Screen.PrintBoard(match.Board, PossiblePositions);
 
-                    Console.WriteLine();
-                    Console.Write("Digite a posição de destino: ");
-                    Position destiny = Screen.ReadChessPosition().ConvertToPosition();
+                        Console.WriteLine();
+                        Console.Write("Digite a posição de destino: ");
+                        Position destiny = Screen.ReadChessPosition().ConvertToPosition();
+                        match.ValidateDestinyPosition(origin, destiny);
 
-                    match.ExecuteMoviment(origin, destiny);
+                        match.PerformMove(origin, destiny);
+                    } catch (BoardException e)
+                    {
+                        Console.WriteLine(e.Message);
+                        Console.ReadLine();
+                    }
                 }
 
             }
 
             catch (BoardException e) {
-                Console.WriteLine($"Board error: {e.Message}");
+                Console.WriteLine(e.Message);
             }
             
         }

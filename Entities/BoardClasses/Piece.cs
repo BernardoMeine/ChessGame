@@ -26,6 +26,31 @@ namespace Section12ChessGame.Entities.BoardClasses
             AmountOfMoviments++;
         }
 
+        public bool ThereArePossibleMoviments()
+        {
+            bool[,] mat = PossibleMoviments();
+
+            for(int i = 0; i < Board.Rows; i++)
+            {
+                for(int j = 0; j < Board.Columns; j++ )
+                {
+                    if (mat[i, j] == true)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public bool CanMoveTo(Position pos)
+        {
+            return PossibleMoviments()[pos.Row, pos.Column];
+        }
+
         public abstract bool[,] PossibleMoviments();
+    
     }
+
 }
+
