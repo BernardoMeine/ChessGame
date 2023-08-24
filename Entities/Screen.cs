@@ -80,5 +80,38 @@ internal class Screen
             Console.Write(" ");
         }
     }
- 
+
+    public static void PrintCapturedPieces(ChessMatch match)
+    {
+        Console.WriteLine("Peças capturadas: ");
+        Console.Write("Brancas: ");
+        PrintHashSet(match.CapturedPieces(Color.White));
+        Console.WriteLine();
+        Console.Write("Pretas: ");
+        ConsoleColor aux = Console.ForegroundColor;
+        Console.ForegroundColor = ConsoleColor.DarkBlue;
+        PrintHashSet(match.CapturedPieces(Color.Black));
+        Console.ForegroundColor = aux;
+        Console.WriteLine();
+    }
+
+    public static void PrintHashSet(HashSet<Piece> hashSet)
+    {
+        Console.Write("[");
+        foreach (Piece piece in hashSet)
+        {
+            Console.Write(piece + " ");
+        }
+        Console.Write("]");
+    }
+
+    public static void PrintMatch(ChessMatch match)
+    {
+        PrintBoard(match.Board);
+        Console.WriteLine();
+        PrintCapturedPieces(match);
+        Console.WriteLine();
+        Console.WriteLine($"Turno: {match.Turn}");
+        Console.WriteLine($"Aguardando jogada: {match.CurrentPlayer}");
+    }
 }

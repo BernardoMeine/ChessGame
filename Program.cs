@@ -17,10 +17,7 @@ namespace Section12ChessGame
                     try
                     {
                         Console.Clear();
-                        Screen.PrintBoard(match.Board);
-                        Console.WriteLine();
-                        Console.WriteLine($"Turno: {match.Turn}");
-                        Console.WriteLine($"Aguardando jogada: {match.CurrentPlayer}");
+                        Screen.PrintMatch(match);
 
                         Console.WriteLine();
                         Console.Write("Digite a posição de origem: ");
