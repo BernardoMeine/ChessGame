@@ -26,6 +26,11 @@ namespace Section12ChessGame.Entities.BoardClasses
             AmountOfMoviments++;
         }
 
+        internal void DecrementAmountOfMoviments()
+        {
+            AmountOfMoviments--;
+        }
+
         public bool ThereArePossibleMoviments()
         {
             bool[,] mat = PossibleMoviments();
@@ -49,7 +54,7 @@ namespace Section12ChessGame.Entities.BoardClasses
         }
 
         public abstract bool[,] PossibleMoviments();
-    
+
     }
 
 }

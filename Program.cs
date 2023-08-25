@@ -41,6 +41,8 @@ namespace Section12ChessGame
                         Console.ReadLine();
                     }
                 }
+                Console.Clear();
+                Screen.PrintMatch(match);
 
             }
 
@@ -48,6 +50,7 @@ namespace Section12ChessGame
                 Console.WriteLine(e.Message);
             }
             
+            Console.ReadLine();
         }
     }
 }

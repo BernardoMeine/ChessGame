@@ -15,6 +15,7 @@ namespace Section12ChessGame.Entities.ChessClasses
         public bool Finished { get; private set; }
         public HashSet<Piece> Pieces { get; private set; }
         public  HashSet<Piece> Captured { get; private set; }
+        public bool Check { get; private set; }
 
 
         public ChessMatch() {
@@ -25,9 +26,10 @@ namespace Section12ChessGame.Entities.ChessClasses
             Pieces = new HashSet<Piece>();
             Captured = new HashSet<Piece>();
             PlacePieces();
+            Check = false;
         }
 
-        public void ExecuteMoviment(Position origin, Position destiny)
+        public Piece ExecuteMoviment(Position origin, Position destiny)
         {
             Piece p = Board.RemovePiece(origin);
             p.IncrementAmountOfMoviments();
@@ -37,15 +39,49 @@ namespace Section12ChessGame.Entities.ChessClasses
             {
                 Captured.Add(CapturedPiece);
             }
+
+            return CapturedPiece;
         }
 
+        public void UndoMoviment(Position origin, Position destiny, Piece capturedPiece)
+        {
+            Piece p = Board.RemovePiece(destiny);
+            p.DecrementAmountOfMoviments();
+            if (capturedPiece != null)
+            {
+                Board.PlacePiece(capturedPiece, destiny);
+                Captured.Remove(capturedPiece);
+            }
 
+            Board.PlacePiece(p, origin);
+        }
 
         public void PerformMove(Position origin, Position destiny)
         {
-            ExecuteMoviment(origin, destiny);
-            Turn++;
-            ChangePlayer();
+            Piece capturedPiece = ExecuteMoviment(origin, destiny);
+
+            if(isInCheck(CurrentPlayer))
+            {
+                UndoMoviment(origin, destiny, capturedPiece);
+                throw new BoardException("Você não pode se colocar em xeque!");
+            }
+
+            if(isInCheck(Adversary(CurrentPlayer)))
+            {
+                Check = true;
+            } else
+            {
+                Check = false;
+            }
+
+            if(TestCheckMate(Adversary(CurrentPlayer)))
+            {
+                Finished = true;
+            } else
+            {
+                Turn++;
+                ChangePlayer();
+            }
         }
 
         public void ValidateOriginPosition (Position pos)
@@ -108,6 +144,80 @@ namespace Section12ChessGame.Entities.ChessClasses
             }
             aux.ExceptWith(CapturedPieces(color));
             return aux;
+        }
+
+        private static Color Adversary(Color color)
+
+        {
+            if(color == Color.White)
+            {
+                return Color.Black;
+            } else
+            {
+                return Color.White;
+            }
+        }
+
+        private Piece King(Color color)
+        {
+            foreach (Piece x in PiecesInGame(color))
+            {
+                if(x is King)
+                {
+                    return x;
+                }
+            }
+
+            return null;
+        }
+
+        public bool isInCheck(Color color)
+        {
+            Piece king = King(color) ?? throw new BoardException($"Não tem rei da cor {color} no tabuleiro ");
+
+            foreach (Piece x in PiecesInGame(Adversary(color)))
+            {
+                bool[,] mat = x.PossibleMoviments();
+                if (mat[king.Position.Row, king.Position.Column])
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool TestCheckMate(Color color)
+        {
+            if (!isInCheck(color))
+            {
+                return false;
+            }
+
+            foreach(Piece x in PiecesInGame(color))
+            {
+                bool[,] mat = x.PossibleMoviments();
+                for (int i = 0; i < Board.Rows; i++)
+                {
+                    for(int j = 0; j < Board.Columns; j++)
+                    {
+                        if (mat[i, j] = true)
+                        {
+                            Position origin = x.Position;
+                            Position destiny = new Position(i, j);
+                            Piece capturedPiece = ExecuteMoviment(origin, destiny);
+                            bool testCheck = isInCheck(color);
+                            UndoMoviment(origin, destiny, capturedPiece);
+                            if(!testCheck)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return true;
         }
 
         public void PlaceNewPiece(char Column, int Row, Piece piece)

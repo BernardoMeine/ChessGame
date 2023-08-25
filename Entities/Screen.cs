@@ -10,6 +10,27 @@ namespace Section12ChessGame.Entities;
 
 internal class Screen
 {
+    public static void PrintMatch(ChessMatch match)
+    {
+        PrintBoard(match.Board);
+        Console.WriteLine();
+        PrintCapturedPieces(match);
+        Console.WriteLine();
+        Console.WriteLine($"Turno: {match.Turn}");
+        if(!match.Finished)
+        {
+            Console.WriteLine($"Aguardando jogada: {match.CurrentPlayer}");
+            if (match.Check)
+            {
+                Console.WriteLine("TU TÁ EM XEQUE PADRINHO!");
+            }
+        } else
+        {
+            Console.WriteLine("XEQUEMATE MEU Q U E R I D Ã O (perdeu)");
+            Console.WriteLine($"Vencedor: {match.CurrentPlayer}");
+        }
+    }
+
     public static void PrintBoard (Board board)
     {
         for(int i = 0; i < board.Rows; i++)
@@ -105,13 +126,4 @@ internal class Screen
         Console.Write("]");
     }
 
-    public static void PrintMatch(ChessMatch match)
-    {
-        PrintBoard(match.Board);
-        Console.WriteLine();
-        PrintCapturedPieces(match);
-        Console.WriteLine();
-        Console.WriteLine($"Turno: {match.Turn}");
-        Console.WriteLine($"Aguardando jogada: {match.CurrentPlayer}");
-    }
 }
