@@ -48,7 +48,7 @@ namespace Section12ChessGame.Entities.BoardClasses
             return false;
         }
 
-        public bool CanMoveTo(Position pos)
+        public bool PossibleMoviment(Position pos)
         {
             return PossibleMoviments()[pos.Row, pos.Column];
         }

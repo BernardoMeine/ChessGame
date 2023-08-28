@@ -60,13 +60,13 @@ namespace Section12ChessGame.Entities.ChessClasses
         {
             Piece capturedPiece = ExecuteMoviment(origin, destiny);
 
-            if(isInCheck(CurrentPlayer))
+            if(IsInCheck(CurrentPlayer))
             {
                 UndoMoviment(origin, destiny, capturedPiece);
                 throw new BoardException("Você não pode se colocar em xeque!");
             }
 
-            if(isInCheck(Adversary(CurrentPlayer)))
+            if(IsInCheck(Adversary(CurrentPlayer)))
             {
                 Check = true;
             } else
@@ -104,7 +104,7 @@ namespace Section12ChessGame.Entities.ChessClasses
 
         public void ValidateDestinyPosition (Position origin, Position destiny)
         {
-            if (!Board.Piece(origin).CanMoveTo(destiny)) {
+            if (!Board.Piece(origin).PossibleMoviment(destiny)) {
                 throw new BoardException("Posição de destino inválida!");
             }
         }
@@ -171,9 +171,14 @@ namespace Section12ChessGame.Entities.ChessClasses
             return null;
         }
 
-        public bool isInCheck(Color color)
+        public bool IsInCheck(Color color)
         {
-            Piece king = King(color) ?? throw new BoardException($"Não tem rei da cor {color} no tabuleiro ");
+            Piece king = King(color);
+
+            if(king == null)
+            {
+                throw new BoardException("Não existe rei da cor informada!");
+            }
 
             foreach (Piece x in PiecesInGame(Adversary(color)))
             {
@@ -189,7 +194,7 @@ namespace Section12ChessGame.Entities.ChessClasses
 
         public bool TestCheckMate(Color color)
         {
-            if (!isInCheck(color))
+            if (!IsInCheck(color))
             {
                 return false;
             }
@@ -201,12 +206,12 @@ namespace Section12ChessGame.Entities.ChessClasses
                 {
                     for(int j = 0; j < Board.Columns; j++)
                     {
-                        if (mat[i, j] = true)
+                        if (mat[i, j] == true)
                         {
                             Position origin = x.Position;
                             Position destiny = new Position(i, j);
                             Piece capturedPiece = ExecuteMoviment(origin, destiny);
-                            bool testCheck = isInCheck(color);
+                            bool testCheck = IsInCheck(color);
                             UndoMoviment(origin, destiny, capturedPiece);
                             if(!testCheck)
                             {
@@ -228,19 +233,41 @@ namespace Section12ChessGame.Entities.ChessClasses
 
         private void PlacePieces()
         {
-            PlaceNewPiece('c', 1, new Tower(Color.White, Board));
-            PlaceNewPiece('d', 1, new King(Color.White, Board));
-            PlaceNewPiece('e', 1, new Tower(Color.White, Board));
-            PlaceNewPiece('c', 2, new Tower(Color.White, Board));
-            PlaceNewPiece('d', 2, new Tower(Color.White, Board));
-            PlaceNewPiece('e', 2, new Tower(Color.White, Board));
+            PlaceNewPiece('a', 1, new Tower(Color.White, Board));
+            PlaceNewPiece('b', 1, new Horse(Color.White, Board));
+            PlaceNewPiece('c', 1, new Bishop(Color.White, Board));
+            PlaceNewPiece('d', 1, new Queen(Color.White, Board));
+            PlaceNewPiece('e', 1, new King(Color.White, Board));
+            PlaceNewPiece('f', 1, new Bishop(Color.White, Board));
+            PlaceNewPiece('g', 1, new Horse(Color.White, Board));
+            PlaceNewPiece('h', 1, new Tower(Color.White, Board));
+            PlaceNewPiece('a', 2, new Pawn(Color.White, Board));
+            PlaceNewPiece('b', 2, new Pawn(Color.White, Board));
+            PlaceNewPiece('c', 2, new Pawn(Color.White, Board));
+            PlaceNewPiece('d', 2, new Pawn(Color.White, Board));
+            PlaceNewPiece('e', 2, new Pawn(Color.White, Board));
+            PlaceNewPiece('f', 2, new Pawn(Color.White, Board));
+            PlaceNewPiece('g', 2, new Pawn(Color.White, Board));
+            PlaceNewPiece('h', 2, new Pawn(Color.White, Board));
 
-            PlaceNewPiece('c', 8, new Tower(Color.Black, Board));
-            PlaceNewPiece('d', 8, new King(Color.Black, Board));
-            PlaceNewPiece('e', 8, new Tower(Color.Black, Board));
-            PlaceNewPiece('c', 7, new Tower(Color.Black, Board));
-            PlaceNewPiece('d', 7, new Tower(Color.Black, Board));
-            PlaceNewPiece('e', 7, new Tower(Color.Black, Board));
+
+
+            PlaceNewPiece('a', 8, new Tower(Color.Black, Board));
+            PlaceNewPiece('b', 8, new Horse(Color.Black, Board));
+            PlaceNewPiece('c', 8, new Bishop(Color.Black, Board));
+            PlaceNewPiece('d', 8, new Queen(Color.Black, Board));
+            PlaceNewPiece('e', 8, new King(Color.Black, Board));
+            PlaceNewPiece('f', 8, new Bishop(Color.Black, Board));
+            PlaceNewPiece('g', 8, new Horse(Color.Black, Board));
+            PlaceNewPiece('h', 8, new Tower(Color.Black, Board));
+            PlaceNewPiece('a', 7, new Pawn(Color.Black, Board));
+            PlaceNewPiece('b', 7, new Pawn(Color.Black, Board));
+            PlaceNewPiece('c', 7, new Pawn(Color.Black, Board));
+            PlaceNewPiece('d', 7, new Pawn(Color.Black, Board));
+            PlaceNewPiece('e', 7, new Pawn(Color.Black, Board));
+            PlaceNewPiece('f', 7, new Pawn(Color.Black, Board));
+            PlaceNewPiece('g', 7, new Pawn(Color.Black, Board));
+            PlaceNewPiece('h', 7, new Pawn(Color.Black, Board));
         }
 
         
