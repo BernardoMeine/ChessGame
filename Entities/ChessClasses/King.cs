@@ -3,21 +3,31 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Section12ChessGame.Entities.ChessClasses
 {
     internal class King : Piece
     {
-        public King(Color color, Board board) 
+        private ChessMatch Match;
+
+        public King(Color color, Board board, ChessMatch match) 
             : base(color, board)
         {
+            Match = match;
         }
 
         private bool CanMove(Position pos)
         {
             Piece p = Board.Piece(pos);
             return p == null || p.Color != Color;
+        }
+
+        public bool TestTowerForRoq(Position pos)
+        {
+            Piece p = Board.Piece(pos);
+            return p != null && p is Tower && p.Color == Color && p.AmountOfMoviments == 0;
         }
 
         public override bool[,] PossibleMoviments()
@@ -82,8 +92,43 @@ namespace Section12ChessGame.Entities.ChessClasses
                 mat[pos.Row, pos.Column] = true;
             }
 
+            // # Special Play - Roq
+
+            if (AmountOfMoviments == 0 && !Match.Check)
+            {
+                // #Special Play small Roq
+               Position posSmallTower = new Position(Position.Row, Position.Column + 3);
+                if (TestTowerForRoq(posSmallTower))
+                {
+                    Position p1 = new Position(Position.Row, Position.Column + 1);
+                    Position p2 = new Position(Position.Row, Position.Column + 2);
+                    if(Board.Piece(p1) == null && Board.Piece(p2) == null)
+                    {
+                        mat[Position.Row, Position.Column + 2] = true;
+                    }
+                }
+            }
+
+            if (AmountOfMoviments == 0 && !Match.Check)
+            {
+                // #Special Play big Roq
+                Position posBigTower = new Position(Position.Row, Position.Column - 4);
+                if (TestTowerForRoq(posBigTower))
+                {
+                    Position p1 = new Position(Position.Row, Position.Column - 1);
+                    Position p2 = new Position(Position.Row, Position.Column - 2);
+                    Position p3 = new Position(Position.Row, Position.Column - 3);
+
+                    if (Board.Piece(p1) == null && Board.Piece(p2) == null && Board.Piece(p3) == null)
+                    {
+                        mat[Position.Row, Position.Column - 2] = true;
+                    }
+                }
+            }
+
             return mat;
         }
+
 
         public override string ToString()
         {

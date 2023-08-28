@@ -40,6 +40,28 @@ namespace Section12ChessGame.Entities.ChessClasses
                 Captured.Add(CapturedPiece);
             }
 
+            //Special move Small Roq
+
+            if (p is King && destiny.Column == origin.Column + 2)
+            {
+                Position towerOrigin = new Position(origin.Row, origin.Column + 3);
+                Position towerDestiny = new Position(origin.Row, origin.Column + 1);
+                Piece T = Board.RemovePiece(towerOrigin);
+                T.IncrementAmountOfMoviments();
+                Board.PlacePiece(T, towerDestiny);
+            }
+
+            //Special move Big Roq
+
+            if (p is King && destiny.Column == origin.Column - 2)
+            {
+                Position towerOrigin = new Position(origin.Row, origin.Column - 4);
+                Position towerDestiny = new Position(origin.Row, origin.Column - 1);
+                Piece T = Board.RemovePiece(towerOrigin);
+                T.IncrementAmountOfMoviments();
+                Board.PlacePiece(T, towerDestiny);
+            }
+
             return CapturedPiece;
         }
 
@@ -51,6 +73,28 @@ namespace Section12ChessGame.Entities.ChessClasses
             {
                 Board.PlacePiece(capturedPiece, destiny);
                 Captured.Remove(capturedPiece);
+            }
+
+            //Special move Small Roq
+
+            if (p is King && destiny.Column == origin.Column + 2)
+            {
+                Position towerOrigin = new Position(origin.Row, origin.Column + 3);
+                Position towerDestiny = new Position(origin.Row, origin.Column + 1);
+                Piece T = Board.RemovePiece(towerDestiny);
+                T.DecrementAmountOfMoviments();
+                Board.PlacePiece(T, towerOrigin);
+            }
+
+            //Special move Big Roq
+
+            if (p is King && destiny.Column == origin.Column - 2)
+            {
+                Position towerOrigin = new Position(origin.Row, origin.Column - 4);
+                Position towerDestiny = new Position(origin.Row, origin.Column - 1);
+                Piece T = Board.RemovePiece(towerDestiny);
+                T.DecrementAmountOfMoviments();
+                Board.PlacePiece(T, towerOrigin);
             }
 
             Board.PlacePiece(p, origin);
@@ -237,7 +281,7 @@ namespace Section12ChessGame.Entities.ChessClasses
             PlaceNewPiece('b', 1, new Horse(Color.White, Board));
             PlaceNewPiece('c', 1, new Bishop(Color.White, Board));
             PlaceNewPiece('d', 1, new Queen(Color.White, Board));
-            PlaceNewPiece('e', 1, new King(Color.White, Board));
+            PlaceNewPiece('e', 1, new King(Color.White, Board, this));
             PlaceNewPiece('f', 1, new Bishop(Color.White, Board));
             PlaceNewPiece('g', 1, new Horse(Color.White, Board));
             PlaceNewPiece('h', 1, new Tower(Color.White, Board));
@@ -256,7 +300,7 @@ namespace Section12ChessGame.Entities.ChessClasses
             PlaceNewPiece('b', 8, new Horse(Color.Black, Board));
             PlaceNewPiece('c', 8, new Bishop(Color.Black, Board));
             PlaceNewPiece('d', 8, new Queen(Color.Black, Board));
-            PlaceNewPiece('e', 8, new King(Color.Black, Board));
+            PlaceNewPiece('e', 8, new King(Color.Black, Board, this));
             PlaceNewPiece('f', 8, new Bishop(Color.Black, Board));
             PlaceNewPiece('g', 8, new Horse(Color.Black, Board));
             PlaceNewPiece('h', 8, new Tower(Color.Black, Board));
