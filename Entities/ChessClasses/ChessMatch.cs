@@ -145,7 +145,22 @@ namespace Section12ChessGame.Entities.ChessClasses
                 throw new BoardException("Você não pode se colocar em xeque!");
             }
 
-            if(IsInCheck(Adversary(CurrentPlayer)))
+            Piece p = Board.Piece(destiny);
+
+            // #Special Move Promotion
+            if(p is Pawn)
+            {
+                if((p.Color == Color.White && destiny.Row == 0) || (p.Color == Color.Black && destiny.Row == 7))
+                {
+                    p = Board.RemovePiece(destiny);
+                    Pieces.Remove(p);
+                    Piece Queen = new Queen(p.Color,Board);
+                    Board.PlacePiece(Queen, destiny);
+                    Pieces.Add(Queen);
+                }
+            }
+
+            if (IsInCheck(Adversary(CurrentPlayer)))
             {
                 Check = true;
             } else
@@ -161,8 +176,6 @@ namespace Section12ChessGame.Entities.ChessClasses
                 Turn++;
                 ChangePlayer();
             }
-
-            Piece p = Board.Piece(destiny);
 
             // # Special Move En Passant
 
